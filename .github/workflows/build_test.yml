@@ -26,3 +26,5 @@ jobs:
       run: chmod +x ./node_modules/.bin/mocha
     - name: Run Tests
       run: npm test
+    - name: Run Security Tests
+      run: npm audit
