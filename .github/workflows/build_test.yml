@@ -6,9 +6,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  build-test:
+  Unit-test:
 
     runs-on: ubuntu-latest
 
@@ -21,5 +22,21 @@ jobs:
         node-version: 22
     - name: Install Dependencies
       run: npm install
+    - name: Fix permissions for mocha
+      run: chmod +x ./node_modules/.bin/mocha
     - name: Run Tests
       run: npm test
+  
+  Security-test:
+    needs: Unit-test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Audit for vulnerabilities
+      run: npm audit
